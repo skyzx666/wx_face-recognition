@@ -1,0 +1,151 @@
+loading.js
+const app = getApp()
+
+Page({
+  data: {
+    
+    img: "../../image/wechatHL.png",
+    title: "爱勤考勤系统",
+    content: "Welcome!!!",
+    phone: '',
+    password: '',
+    author: "联系我们"
+
+  },
+  // 获取输入账号 
+  phoneInput: function (e) {
+    this.setData({
+      phone: e.detail.value
+    })
+  },
+
+  // 获取输入密码 
+  passwordInput: function (e) {
+    this.setData({
+      password: e.detail.value
+    })
+  },
+
+  // 登录 
+  login: function () {
+    if (this.data.phone.length == 0 || this.data.password.length == 0) {
+      wx.showToast({
+        title: '用户名和密码不能为空',
+        icon: 'loading',
+        duration: 2000
+      })
+    } else {
+      // 这里修改成跳转的页面 
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success',
+        duration: 2000
+      })
+    }
+  }
+})
+      
+      
+loading,json
+{
+  "navigationBarTitleText": "登入"
+}
+
+
+loading.wxml
+<view class="loading">
+ <view class="loading.first">
+  <view><image class="loading.second"  src="{{img}}" background-position="center"  ></image></view>
+  <view class="loading.third">{{title}}</view>
+ </view>
+ <view class="login-from"> 
+ <!--账号-->
+ <view class="inputView"> 
+  <image class="nameImage" src="../../image/4.png"></image> 
+  <label class="loginLab">账号</label> 
+  <input class="inputText" placeholder="请输入账号" bindinput="phoneInput" /> 
+ </view> 
+ <view class="line"></view> 
+ <!--密码-->
+ <view class="inputView"> 
+  <image class="keyImage" src="../../image/7.png"></image> 
+  <label class="loginLab">密码</label> 
+  <input class="inputText" password="true" placeholder="请输入密码" bindinput="passwordInput" /> 
+ </view> 
+ <!--按钮-->
+ <navigator url="../../pages/search/search" hover-class="navigator-hover">
+ <view class="loginBtnView"> 
+  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="login">登录</button> 
+ </view></navigator> 
+ <navigator url="../../pages/lists/lists" hover-class="navigator-hover">
+ <view class="loginBtnView"> 
+  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="login">注册</button> 
+ </view> 
+ </navigator>
+</view>
+<navigator url="../../pages/lists/lists" hover-class="navigator-hover">
+ <view class="loading.sixth">{{author}}</view></navigator>
+</view>
+
+
+loading.wxss
+.loading.first{text-align:center}
+.loading.second{width:120px;height:100px;margin-bottom: 30px}
+.loading.third{text-align: center;font-weight: 700}
+.loading.fourth{text-align:left;font-size: 60px;position:absolute;top: 40%}
+.loading.sixth{position: absolute;bottom: 30px;font-weight: 500}
+.login-from { 
+ margin-top: 20px; 
+ flex: auto; 
+ height:100%; 
+} 
+  
+.inputView { 
+ background-color: #fff; 
+ line-height: 44px; 
+} 
+/*输入框*/
+.nameImage, .keyImage { 
+ margin-left: 22px; 
+ width: 14px; 
+ height: 14px
+} 
+  
+.loginLab { 
+ margin: 15px 15px 15px 10px; 
+ color: #545454; 
+ font-size: 14px
+} 
+.inputText { 
+ flex: block; 
+ float: right; 
+ text-align: right; 
+ margin-right: 22px; 
+ margin-top: 11px; 
+ color: #cccccc; 
+ font-size: 14px
+} 
+.line { 
+ width: 100%; 
+ height: 1px; 
+ background-color: #cccccc; 
+ margin-top: 1px; 
+}   
+
+/*按钮*/
+.loginBtnView { 
+ width: 100%; 
+ height: auto; 
+ margin-top: 0px; 
+ margin-bottom: 0px; 
+ padding-bottom: 0px;  
+ 
+} 
+  
+.loginBtn { 
+ width: 80%; 
+ margin-top: 35px; 
+}
+
+    
+  
