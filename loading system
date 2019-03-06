@@ -1,16 +1,14 @@
-loading.js
 const app = getApp()
-
 Page({
   data: {
     
-    img: "../../image/wechatHL.png",
+    img: "../../image/1234.png",
     title: "爱勤考勤系统",
     content: "Welcome!!!",
     phone: '',
     password: '',
-    author: "联系我们"
-
+    author: "教师端登录",
+    text:''
   },
   // 获取输入账号 
   phoneInput: function (e) {
@@ -25,75 +23,121 @@ Page({
       password: e.detail.value
     })
   },
-
+  
   // 登录 
-  login: function () {
+  formsubmit: function (e) {
     if (this.data.phone.length == 0 || this.data.password.length == 0) {
       wx.showToast({
         title: '用户名和密码不能为空',
         icon: 'loading',
         duration: 2000
-      })
-    } else {
+      })  
+  
+    
+    }else{
       // 这里修改成跳转的页面 
-      wx.showToast({
-        title: '登录成功',
-        icon: 'success',
-        duration: 2000
+      var page=this;
+      var abc = e.detail.value.userId;
+      wx.setStorage({
+        key: "cargo",
+        data: abc
       })
-    }
+      wx.request({
+        url: 'http://localhost/examing.php',
+        method: 'POST',
+        data: {
+          userId: e.detail.value.userId,
+            //这里是发送给服务器的参数（参数名：参数值）
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'  //这里注意POST请求content-type是小写，大写会报错
+        },
+        success: function (res) {
+          if (e.detail.value.userpass == res.data){
+            console.log(res.data)
+            wx.navigateTo({
+              url: '../search/search',
+            })
+          
+          } else {
+            console.log(res.data)
+            wx.showToast({
+              title: '密码错误',
+              icon: 'loading',
+              duration: 2000
+            })  
+
+          }
+},
+        fail: function () {
+          console.log('fail')
+        }
+      })
+       }
   }
+  
 })
       
       
-loading,json
+      
+loading.json
 {
   "navigationBarTitleText": "登入"
 }
 
 
 loading.wxml
+<!--pages/loading/loading.wxml-->
+<view >{{text}}</view>
 <view class="loading">
  <view class="loading.first">
   <view><image class="loading.second"  src="{{img}}" background-position="center"  ></image></view>
   <view class="loading.third">{{title}}</view>
  </view>
+ <form bindsubmit="formsubmit">
  <view class="login-from"> 
  <!--账号-->
  <view class="inputView"> 
   <image class="nameImage" src="../../image/4.png"></image> 
   <label class="loginLab">账号</label> 
-  <input class="inputText" placeholder="请输入账号" bindinput="phoneInput" /> 
+  <input name="userId" class="inputText" placeholder="请输入账号" bindinput="phoneInput" /> 
  </view> 
  <view class="line"></view> 
  <!--密码-->
  <view class="inputView"> 
   <image class="keyImage" src="../../image/7.png"></image> 
   <label class="loginLab">密码</label> 
-  <input class="inputText" password="true" placeholder="请输入密码" bindinput="passwordInput" /> 
+  <input name="userpass" class="inputText" password="true" placeholder="请输入密码" bindinput="passwordInput" /> 
  </view> 
  <!--按钮-->
- <navigator url="../../pages/search/search" hover-class="navigator-hover">
- <view class="loginBtnView"> 
-  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="login">登录</button> 
- </view></navigator> 
+ 
+ <view class="loginBtnView">
+ 
+  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}"  formType="submit">登录</button>  
+ </view>
  <navigator url="../../pages/lists/lists" hover-class="navigator-hover">
  <view class="loginBtnView"> 
-  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" bindtap="login">注册</button> 
+  <button class="loginBtn" type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" >注册</button> 
  </view> 
  </navigator>
 </view>
-<navigator url="../../pages/lists/lists" hover-class="navigator-hover">
- <view class="loading.sixth">{{author}}</view></navigator>
+</form>
+
 </view>
 
 
 loading.wxss
+/* pages/loading/loading.wxss */
+page {  
+  display: block;  
+  min-height: 100%;  
+   
+}  
 .loading.first{text-align:center}
-.loading.second{width:120px;height:100px;margin-bottom: 30px}
+.loading.second{width:150px;height:100px;margin-top:20px;margin-bottom: 20px}
 .loading.third{text-align: center;font-weight: 700}
 .loading.fourth{text-align:left;font-size: 60px;position:absolute;top: 40%}
-.loading.sixth{position: absolute;bottom: 30px;font-weight: 500}
+.loading.sixth{position: absolute;bottom: 40px;font-weight: 600}
 .login-from { 
  margin-top: 20px; 
  flex: auto; 
@@ -144,8 +188,6 @@ loading.wxss
   
 .loginBtn { 
  width: 80%; 
- margin-top: 35px; 
+ margin-top: 35px;
+color: red;
 }
-
-    
-  
